@@ -2,13 +2,16 @@ package com.AppRH.AppRH.Controllers;
 
 import com.AppRH.AppRH.Repository.DependenteRepository;
 import com.AppRH.AppRH.Repository.FuncionarioRepository;
+import com.AppRH.AppRH.models.Dependente;
 import com.AppRH.AppRH.models.Funcionario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -40,8 +43,55 @@ public class FuncionarioController {
         return "redirect/cadastrarFuncionario";
     }
 
+    // Listar Funcionario
+    @RequestMapping("/funcionarios")
+    public ModelAndView listaFuncionario() {
+        ModelAndView modelAndView = new ModelAndView("funcionario/listaFuncionario");
 
+        Iterable<Funcionario> funcionarios = funcionarioRepository.findAll();
+        modelAndView.addObject("funcionarios", funcionarios);
+        return modelAndView;
+    }
 
+    // Listar Dependentes
+    @RequestMapping(value = "/dependentes/{id}", method = RequestMethod.GET)
+    public ModelAndView dependentes(@PathVariable("id") long id) {
 
+        Funcionario funcionario = funcionarioRepository.findById(id);
+        ModelAndView modelAndView = new ModelAndView("funcionario/dependentes");
+
+        modelAndView.addObject("funcionario", funcionario);
+
+        // Lista baseada por funcionário
+        Iterable<Dependente> dependentes = dependenteRepository.findByFuncionario(funcionario);
+        modelAndView.addObject("dependentes", dependentes);
+
+        return modelAndView;
+    }
+
+    // Adicionar Dependentes
+    @RequestMapping(value = "/dependentes/{ìd}", method = RequestMethod.POST)
+    public String dependentesPost(@PathVariable("id") long id, Dependente dependente,
+                                  BindingResult result, RedirectAttributes attributes) {
+
+        if(result.hasErrors()) {
+            attributes.addFlashAttribute("mensagem", "Verifique os campos...");
+            return "redirect:/dependentes/{id}";
+        }
+
+        if (dependenteRepository.findByCpfDependente(dependente.getCpfDependente()) != null) {
+            attributes.addFlashAttribute("mensagem", "CPF duplicado.");
+            return "redirect:/dependentes/{id}";
+        }
+
+        Funcionario funcionario = funcionarioRepository.findById(id);
+        dependente.setFuncionario(funcionario);
+        dependenteRepository.save(dependente);
+
+        attributes.addFlashAttribute("mensagem", "Dependente adicionado com sucesso!");
+
+        return "redirect:/dependentes/{id}";
+
+    }
 
 }

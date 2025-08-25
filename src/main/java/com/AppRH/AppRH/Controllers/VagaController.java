@@ -124,7 +124,7 @@ public class VagaController {
         return modelAndView;
     }
 
-    //Update Vaga
+    // Update Vaga
     @RequestMapping(value = "/editar-vaga", method = RequestMethod.POST)
     public String updateVaga(@Valid Vaga vaga, BindingResult result, RedirectAttributes attributes) {
 

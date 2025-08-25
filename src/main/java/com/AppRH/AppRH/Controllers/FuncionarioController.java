@@ -91,7 +91,57 @@ public class FuncionarioController {
         attributes.addFlashAttribute("mensagem", "Dependente adicionado com sucesso!");
 
         return "redirect:/dependentes/{id}";
-
     }
+
+    // Deletar Funcionário
+    @RequestMapping("deletarFuncionario")
+    public String deletarFuncionario(long id) {
+
+        Funcionario funcionario = funcionarioRepository.findById(id);
+        funcionarioRepository.delete(funcionario);
+
+        return "redirect:/funcionarios";
+    }
+
+    // Métodos para Atualizar Funcionário
+    // Formulário edição de funcionário
+    @RequestMapping(value = "/editar-funcionario", method = RequestMethod.GET)
+    public ModelAndView editarFuncionario(long id ) {
+
+        Funcionario funcionario = funcionarioRepository.findById(id);
+        ModelAndView modelAndView = new ModelAndView("funcionario/update-funcionario");
+        modelAndView.addObject("funcionario", funcionario);
+
+        return modelAndView;
+    }
+
+    // Update Funcionário
+    @RequestMapping(value = "/editar-funcionario", method = RequestMethod.POST)
+    public String updateFuncionario(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attributes) {
+
+        funcionarioRepository.save(funcionario);
+        attributes.addFlashAttribute("success", "Funcionário alterado com sucesso!");
+
+        long idLong = funcionario.getId();
+        String id = "" + idLong;
+
+        return "redirect:/dependentes/" + id;
+    }
+
+    // Deletar Dependente
+    @RequestMapping("/deletarDependente")
+    public String deletarDependente(String cpf) {
+
+        Dependente dependente = dependenteRepository.findByCpfDependente(cpf);
+
+        Funcionario funcionario = dependente.getFuncionario();
+        String codigo = "" + funcionario.getId();
+
+        dependenteRepository.delete(dependente);
+
+        return "redirect:/dependentes/" + codigo;
+    }
+
+
 
 }

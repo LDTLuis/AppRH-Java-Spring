@@ -35,12 +35,12 @@ public class FuncionarioController {
 
         if(result.hasErrors()) {
             attributes.addFlashAttribute("mensagem", "Verifique os campos...");
-            return "redirect/cadastrarFuncionario";
+            return "redirect:/cadastrarFuncionario";
         }
 
         funcionarioRepository.save(funcionario);
         attributes.addFlashAttribute("mensagem", "Funcionário cadastrado com sucesso!");
-        return "redirect/cadastrarFuncionario";
+        return "redirect:/cadastrarFuncionario";
     }
 
     // Listar Funcionario
@@ -60,7 +60,7 @@ public class FuncionarioController {
         Funcionario funcionario = funcionarioRepository.findById(id);
         ModelAndView modelAndView = new ModelAndView("funcionario/dependentes");
 
-        modelAndView.addObject("funcionario", funcionario);
+        modelAndView.addObject("funcionarios", funcionario);
 
         // Lista baseada por funcionário
         Iterable<Dependente> dependentes = dependenteRepository.findByFuncionario(funcionario);
@@ -70,30 +70,28 @@ public class FuncionarioController {
     }
 
     // Adicionar Dependentes
-    @RequestMapping(value = "/dependentes/{ìd}", method = RequestMethod.POST)
-    public String dependentesPost(@PathVariable("id") long id, Dependente dependente,
-                                  BindingResult result, RedirectAttributes attributes) {
+    @RequestMapping(value="/dependentes/{id}", method = RequestMethod.POST)
+    public String dependentesPost(@PathVariable("id") long id, Dependente dependentes, BindingResult result,
+                                  RedirectAttributes attributes) {
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             attributes.addFlashAttribute("mensagem", "Verifique os campos...");
             return "redirect:/dependentes/{id}";
         }
 
-        if (dependenteRepository.findByCpfDependente(dependente.getCpfDependente()) != null) {
-            attributes.addFlashAttribute("mensagem", "CPF duplicado.");
+        if (dependenteRepository.findByCpfDependente(dependentes.getCpfDependente()) != null) {
+            attributes.addFlashAttribute("mensagem_erro", "CPF duplicado");
             return "redirect:/dependentes/{id}";
         }
 
         Funcionario funcionario = funcionarioRepository.findById(id);
-        dependente.setFuncionario(funcionario);
-        dependenteRepository.save(dependente);
-
-        attributes.addFlashAttribute("mensagem", "Dependente adicionado com sucesso!");
-
+        dependentes.setFuncionario(funcionario);
+        dependenteRepository.save(dependentes);
+        attributes.addFlashAttribute("mensagem", "Dependente adicionado com sucesso");
         return "redirect:/dependentes/{id}";
     }
 
-    // Deletar Funcionário
+        // Deletar Funcionário
     @RequestMapping("deletarFuncionario")
     public String deletarFuncionario(long id) {
 
@@ -141,7 +139,5 @@ public class FuncionarioController {
 
         return "redirect:/dependentes/" + codigo;
     }
-
-
 
 }

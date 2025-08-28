@@ -2,22 +2,23 @@ package com.AppRH.AppRH.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Entity
 public class Dependente {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(unique = true)
     private String cpfDependente;
 
-    @NotEmpty
+    @NotEmpty(message = "O nome do dependente não pode ser vazio")
     private String nomeDependente;
 
-    @NotEmpty
-    private String dataNascimentoDependente;
+    private LocalDate dataNascimentoDependente;
 
     @ManyToOne
     private Funcionario funcionario;
@@ -38,11 +39,11 @@ public class Dependente {
         this.nomeDependente = nomeDependente;
     }
 
-    public String getDataNascimentoDependente() {
+    public LocalDate getDataNascimentoDependente() {
         return dataNascimentoDependente;
     }
 
-    public void setDataNascimentoDependente(String dataNascimentoDependente) {
+    public void setDataNascimentoDependente(LocalDate dataNascimentoDependente) {
         this.dataNascimentoDependente = dataNascimentoDependente;
     }
 

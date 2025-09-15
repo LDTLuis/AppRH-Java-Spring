@@ -1,11 +1,12 @@
-package com.AppRH.AppRH.Controllers;
+package com.AppRH.AppRH.controllers;
 
-import com.AppRH.AppRH.Repository.DependenteRepository;
-import com.AppRH.AppRH.Repository.FuncionarioRepository;
+import com.AppRH.AppRH.repository.DependenteRepository;
+import com.AppRH.AppRH.repository.FuncionarioRepository;
 import com.AppRH.AppRH.models.Dependente;
 import com.AppRH.AppRH.models.Funcionario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 public class FuncionarioController {
 
     @Autowired

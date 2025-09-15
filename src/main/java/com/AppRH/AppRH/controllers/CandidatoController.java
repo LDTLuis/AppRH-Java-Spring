@@ -1,4 +1,4 @@
-package com.AppRH.AppRH.Controllers;
+package com.AppRH.AppRH.controllers;
 
 public class CandidatoController {
 }

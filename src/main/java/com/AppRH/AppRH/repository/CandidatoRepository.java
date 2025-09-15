@@ -1,4 +1,4 @@
-package com.AppRH.AppRH.Repository;
+package com.AppRH.AppRH.repository;
 
 import com.AppRH.AppRH.models.Candidato;
 import com.AppRH.AppRH.models.Vaga;

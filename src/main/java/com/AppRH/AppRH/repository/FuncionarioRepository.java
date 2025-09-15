@@ -1,4 +1,4 @@
-package com.AppRH.AppRH.Repository;
+package com.AppRH.AppRH.repository;
 
 import com.AppRH.AppRH.models.Funcionario;
 import org.springframework.data.jpa.repository.Query;

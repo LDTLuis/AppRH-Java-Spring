@@ -1,10 +1,8 @@
-package com.AppRH.AppRH.Repository;
+package com.AppRH.AppRH.repository;
 
-import com.AppRH.AppRH.models.Funcionario;
 import com.AppRH.AppRH.models.Vaga;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

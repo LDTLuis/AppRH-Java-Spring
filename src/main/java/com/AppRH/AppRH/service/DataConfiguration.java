@@ -1,4 +1,4 @@
-package com.AppRH.AppRH;
+package com.AppRH.AppRH.service;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

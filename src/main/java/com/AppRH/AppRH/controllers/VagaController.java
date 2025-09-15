@@ -1,7 +1,7 @@
-package com.AppRH.AppRH.Controllers;
+package com.AppRH.AppRH.controllers;
 
-import com.AppRH.AppRH.Repository.CandidatoRepository;
-import com.AppRH.AppRH.Repository.VagaRepository;
+import com.AppRH.AppRH.repository.CandidatoRepository;
+import com.AppRH.AppRH.repository.VagaRepository;
 import com.AppRH.AppRH.models.Candidato;
 import com.AppRH.AppRH.models.Vaga;
 import jakarta.validation.Valid;
@@ -134,7 +134,7 @@ public class VagaController {
         long codigoLong = vaga.getCodigo();
         String codigo = "" + codigoLong;
 
-        return "redirect:/" + codigo;
+        return "redirect:/vagas"    ;
     }
 
 }

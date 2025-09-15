@@ -29,7 +29,6 @@ public class Usuario implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getLogin() { return login; }
@@ -39,7 +38,6 @@ public class Usuario implements UserDetails, Serializable {
     public List<Role> getRoles() { return roles; }
     public void setRoles(List<Role> roles) { this.roles = roles; }
 
-    // Métodos da interface UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;

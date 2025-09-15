@@ -18,7 +18,6 @@ public class Role implements GrantedAuthority, Serializable {
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;
 
-    // Getter e Setter
     public String getNomeRole() { return nomeRole; }
     public void setNomeRole(String nomeRole) { this.nomeRole = nomeRole; }
 

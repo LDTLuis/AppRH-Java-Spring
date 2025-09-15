@@ -39,7 +39,6 @@ public class WebConfig {
                         // Qualquer outra requisição exige autenticação (incluindo a página inicial "/")
                         .anyRequest().authenticated()
                 )
-                // --- SEÇÃO DE LOGIN MODIFICADA ---
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true) // Redireciona SEMPRE para a raiz (index.html)

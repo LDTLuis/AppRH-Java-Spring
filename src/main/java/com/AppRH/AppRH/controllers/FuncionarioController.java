@@ -93,7 +93,7 @@ public class FuncionarioController {
         return "redirect:/dependentes/{id}";
     }
 
-        // Deletar Funcionário
+    // Deletar Funcionário
     @RequestMapping("deletarFuncionario")
     public String deletarFuncionario(long id) {
 

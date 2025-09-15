@@ -27,16 +27,12 @@ public class BuscaController {
     @Autowired
     private CandidatoRepository candidatoRepository;
 
-    // 1. Método GET para exibir a página inicial e os resultados da busca
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView abrirIndex() {
         ModelAndView modelAndView = new ModelAndView("index");
-        // Os resultados da busca (adicionados como flash attributes)
-        // estarão disponíveis aqui automaticamente para o Thymeleaf.
         return modelAndView;
     }
 
-    // 2. Método POST para processar a busca e redirecionar
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String buscarIndex(@RequestParam("buscar") String buscar, @RequestParam("nome") String nome, RedirectAttributes attributes) {
 

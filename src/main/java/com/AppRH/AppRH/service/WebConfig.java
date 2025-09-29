@@ -36,16 +36,15 @@ public class WebConfig {
                         .requestMatchers("/dependentes/**", "/deletarDependente").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/dependentes/**").hasRole("ADMIN")
 
-                        // Qualquer outra requisição exige autenticação (incluindo a página inicial "/")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true) // Redireciona SEMPRE para a raiz (index.html)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(logout -> logout.permitAll())
-                .csrf(csrf -> csrf.disable());
+                .logout(logout -> logout.permitAll());
+        // A LINHA CSRF FOI REMOVIDA DAQUI
 
         return http.build();
     }

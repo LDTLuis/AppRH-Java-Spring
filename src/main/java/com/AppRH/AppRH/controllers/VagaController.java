@@ -40,7 +40,7 @@ public class VagaController {
         vagaRepository.save(vaga);
         attributes.addFlashAttribute("mensagem", "Vaga cadastrada com sucesso!");
 
-        return "redirect:/cadastrarVaga";
+        return "redirect:/vagas";
     }
 
     // Listar Vagas
@@ -63,6 +63,7 @@ public class VagaController {
 
         Iterable<Candidato> candidatos = candidatoRepository.findByVaga(vaga);
         modelAndView.addObject("candidatos", candidatos);
+        modelAndView.addObject("candidato", new Candidato());
 
         return modelAndView;
     }
@@ -77,7 +78,7 @@ public class VagaController {
     }
 
     // Adicionar Candidato
-    @RequestMapping(value = "/vaga/{codigo}", method = RequestMethod.POST)
+    @RequestMapping(value = "/vaga/{codigo}/candidato", method = RequestMethod.POST)
     public String detalhesVagaPost(@PathVariable("codigo") long codigo, @Valid Candidato candidato,
                                    BindingResult result, RedirectAttributes attributes) {
 
@@ -88,7 +89,7 @@ public class VagaController {
 
         // RG Duplicado
         if (candidatoRepository.findByRg(candidato.getRg()) != null) {
-            attributes.addFlashAttribute("mensagem_erro", "RG duplicado.");
+            attributes.addFlashAttribute("mensagem_erro", "RG já cadastrado.");
             return "redirect:/vaga/{codigo}";
         }
 
@@ -100,16 +101,21 @@ public class VagaController {
     }
 
     // Deletar Candidato pelo RG
-    @RequestMapping("/deletarCandidato")
-    public String deletarCandidato(String rg) {
-        Candidato candidato = candidatoRepository.findByRg(rg);
-        Vaga vaga = candidato.getVaga();
+    @RequestMapping("/deletarCandidato/{rg}")
+    public String deletarCandidato(@PathVariable("rg") String rg) {
 
-        String codigo = "" + vaga.getCodigo();
+        Candidato candidato = candidatoRepository.findByRg(rg);
+
+        if (candidato == null) {
+            return "redirect:/vagas";
+        }
+
+        Vaga vaga = candidato.getVaga();
+        long codigo = vaga.getCodigo();
 
         candidatoRepository.delete(candidato);
 
-        return "redirect:/" + codigo;
+        return "redirect:/vaga/" + codigo;
     }
 
     // Atualizar vaga

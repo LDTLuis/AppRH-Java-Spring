@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,11 +60,12 @@ public class FuncionarioController {
         Funcionario funcionario = funcionarioRepository.findById(id);
         ModelAndView modelAndView = new ModelAndView("funcionario/dependentes");
 
-        modelAndView.addObject("funcionarios", funcionario);
+        modelAndView.addObject("funcionario", funcionario);
 
-        // Lista baseada por funcionário
         Iterable<Dependente> dependentes = dependenteRepository.findByFuncionario(funcionario);
         modelAndView.addObject("dependentes", dependentes);
+
+        modelAndView.addObject("dependente", new Dependente());
 
         return modelAndView;
     }
@@ -105,27 +104,21 @@ public class FuncionarioController {
 
     // Métodos para Atualizar Funcionário
     // Formulário edição de funcionário
-    @RequestMapping(value = "/editar-funcionario", method = RequestMethod.GET)
-    public ModelAndView editarFuncionario(long id ) {
-
+    @GetMapping("/editar-funcionario/{id}")
+    public ModelAndView editarFuncionario(@PathVariable Long id) {
         Funcionario funcionario = funcionarioRepository.findById(id);
         ModelAndView modelAndView = new ModelAndView("funcionario/update-funcionario");
         modelAndView.addObject("funcionario", funcionario);
-
         return modelAndView;
     }
 
-    // Update Funcionário
-    @RequestMapping(value = "/editar-funcionario", method = RequestMethod.POST)
-    public String updateFuncionario(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attributes) {
-
+    @PostMapping("/editar-funcionario/{id}")
+    public String updateFuncionario(@PathVariable Long id, @Valid Funcionario funcionario,
+                                    BindingResult result, RedirectAttributes attributes) {
+        funcionario.setId(id); // garante que o ID está correto
         funcionarioRepository.save(funcionario);
         attributes.addFlashAttribute("success", "Funcionário alterado com sucesso!");
-
-        long idLong = funcionario.getId();
-        String id = "" + idLong;
-
-        return "redirect:/dependentes/" + id;
+        return "redirect:/funcionarios";
     }
 
     // Deletar Dependente

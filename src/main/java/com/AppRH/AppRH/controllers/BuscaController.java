@@ -6,11 +6,9 @@ import com.AppRH.AppRH.repository.FuncionarioRepository;
 import com.AppRH.AppRH.repository.VagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class BuscaController {
@@ -27,35 +25,31 @@ public class BuscaController {
     @Autowired
     private CandidatoRepository candidatoRepository;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView abrirIndex() {
+    @GetMapping("/")
+    public ModelAndView abrirIndex(
+            @RequestParam(value = "buscar", required = false) String buscar,
+            @RequestParam(value = "nome", required = false) String nome
+    ) {
         ModelAndView modelAndView = new ModelAndView("index");
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String buscarIndex(@RequestParam("buscar") String buscar, @RequestParam("nome") String nome, RedirectAttributes attributes) {
+        if (buscar != null && nome != null) {
+            String mensagem = "Resultados da busca por '" + buscar + "'";
+            modelAndView.addObject("mensagem", mensagem);
 
-        String mensagem = "Resultados da busca por '" + buscar + "'";
-
-        if(nome.equals("nomeFuncionario")) {
-            attributes.addFlashAttribute("funcionarios", funcionarioRepository.finByNomesFuncionarios(buscar));
-        } else if(nome.equals("nomeDependente")) {
-            attributes.addFlashAttribute("dependentes", dependenteRepository.finByNomesDependentes(buscar));
-        } else if(nome.equals("nomeCandidatos")) { // Atenção: Verifique se o valor no HTML é "nomeCandidatos"
-            attributes.addFlashAttribute("candidatos", candidatoRepository.finByCandidatos(buscar));
-        } else if(nome.equals("tituloVaga")) {
-            attributes.addFlashAttribute("vagas", vagaRepository.finByVagas(buscar));
-        } else {
-            attributes.addFlashAttribute("funcionarios", funcionarioRepository.finByNomesFuncionarios(buscar));
-            attributes.addFlashAttribute("dependentes", dependenteRepository.finByNomesDependentes(buscar));
-            attributes.addFlashAttribute("candidatos", candidatoRepository.finByCandidatos(buscar));
-            attributes.addFlashAttribute("vagas", vagaRepository.finByVagas(buscar));
+            switch (nome) {
+                case "nomeFuncionario" -> modelAndView.addObject("funcionarios", funcionarioRepository.finByNomesFuncionarios(buscar));
+                case "nomeDependente" -> modelAndView.addObject("dependentes", dependenteRepository.finByNomesDependentes(buscar));
+                case "nomeCandidato" -> modelAndView.addObject("candidatos", candidatoRepository.finByCandidatos(buscar));
+                case "tituloVaga" -> modelAndView.addObject("vagas", vagaRepository.finByVagas(buscar));
+                case "todos" -> {
+                    modelAndView.addObject("funcionarios", funcionarioRepository.finByNomesFuncionarios(buscar));
+                    modelAndView.addObject("dependentes", dependenteRepository.finByNomesDependentes(buscar));
+                    modelAndView.addObject("candidatos", candidatoRepository.finByCandidatos(buscar));
+                    modelAndView.addObject("vagas", vagaRepository.finByVagas(buscar));
+                }
+            }
         }
 
-        attributes.addFlashAttribute("mensagem", mensagem);
-
-        // 3. Redireciona para o método GET, evitando o reenvio do formulário
-        return "redirect:/";
+        return modelAndView;
     }
 }

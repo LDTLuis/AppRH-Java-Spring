@@ -75,3 +75,27 @@ Antes de tudo, certifique-se de que você **configurou o banco de dados** e **in
 
 4.  **Gerenciar Vagas e Funcionários:**
     * Utilize os menus e botões para cadastrar, listar, editar e deletar vagas, funcionários e seus respectivos candidatos e dependentes.
+
+## Principais Rotas da Aplicação
+
+A aplicação serve páginas HTML renderizadas e protegidas por autenticação.
+
+### Autenticação e Usuários
+* **`GET /login`**: Página de login.
+* **`GET /cadastrarUsuario`**: Formulário para criar um novo usuário (acesso restrito a admins).
+* **`POST /cadastrarUsuario`**: Salva o novo usuário.
+
+### Busca
+* **`POST /buscar`**: Processa a busca por vagas e funcionários.
+
+### Gestão de Vagas
+* **`GET /vagas`**: Lista todas as vagas de emprego.
+* **`GET /cadastrarVaga`**: Exibe o formulário para criar uma nova vaga.
+* **`GET /vaga/{codigo}`**: Exibe os detalhes de uma vaga e seus candidatos.
+* **`GET /editar-vaga`**: Exibe o formulário para editar uma vaga.
+
+### Gestão de Funcionários
+* **`GET /funcionarios`**: Lista todos os funcionários.
+* **`GET /cadastrarFuncionario`**: Exibe o formulário para criar um novo funcionário.
+* **`GET /funcionarios/{id}`**: Exibe os detalhes de um funcionário e seus dependentes.
+* **`GET /editar-funcionario`**: Exibe o formulário para editar um funcionário.

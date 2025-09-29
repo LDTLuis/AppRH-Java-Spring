@@ -65,7 +65,7 @@ First, make sure you have **configured the database** and **started the applicat
     * Open your browser and go to `http://localhost:8080`.
     * You will be redirected to the login page. On the first run, an administrator user is created automatically.
     * **User:** `admin`
-    * **Password:** `admin`
+    * **Password:** `amin`
 
 2.  **Register a New User (Admin):**
     * After logging in as an administrator, access the `/cadastrarUsuario` route to create new users for the system.
@@ -75,3 +75,27 @@ First, make sure you have **configured the database** and **started the applicat
 
 4.  **Manage Vacancies and Employees:**
     * Use the menus and buttons to register, list, edit, and delete vacancies, employees, and their respective candidates and dependents.
+
+## Main Application Routes
+
+The application serves rendered HTML pages protected by authentication.
+
+### Authentication and Users
+* **`GET /login`**: Login page.
+* **`GET /cadastrarUsuario`**: Form to create a new user (admin access required).
+* **`POST /cadastrarUsuario`**: Saves the new user.
+
+### Search
+* **`POST /buscar`**: Processes the search for vacancies and employees.
+
+### Vacancy Management
+* **`GET /vagas`**: Lists all job vacancies.
+* **`GET /cadastrarVaga`**: Displays the form to create a new vacancy.
+* **`GET /vaga/{codigo}`**: Displays the details of a vacancy and its candidates.
+* **`GET /editar-vaga`**: Displays the form to edit a vacancy.
+
+### Employee Management
+* **`GET /funcionarios`**: Lists all employees.
+* **`GET /cadastrarFuncionario`**: Displays the form to create a new employee.
+* **`GET /funcionarios/{id}`**: Displays the details of an employee and their dependents.
+* **`GET /editar-funcionario`**: Displays the form to edit an employee.
